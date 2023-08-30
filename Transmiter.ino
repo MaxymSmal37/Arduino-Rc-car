@@ -12,7 +12,6 @@ RF24 radio(CE_PIN, CSN_PIN);
 
 const byte address[6] = "00001";
 
-//NRF24L01 buffer limit is 32 bytes (max struct size)
 struct payload {
   int data1;
   int data2;
@@ -29,15 +28,11 @@ void setup()
   radio.begin();
   pinMode(2, OUTPUT); 
 
-  //Append ACK packet from the receiving radio back to the transmitting radio
-  radio.setAutoAck(false); //(true|false)
-  //Set the transmission datarate
-  radio.setDataRate(RF24_250KBPS); //(RF24_250KBPS|RF24_1MBPS|RF24_2MBPS)
-  //Greater level = more consumption = longer distance
-  radio.setPALevel(RF24_PA_MAX); //(RF24_PA_MIN|RF24_PA_LOW|RF24_PA_HIGH|RF24_PA_MAX)
-  //Default value is the maximum 32 bytes
+
+  radio.setAutoAck(false);
+  radio.setDataRate(RF24_250KBPS);
+  radio.setPALevel(RF24_PA_MAX); 
   radio.setPayloadSize(sizeof(payload));
-  //Act as transmitter
   radio.openWritingPipe(address);
   radio.stopListening();
 }
