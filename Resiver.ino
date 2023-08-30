@@ -15,7 +15,6 @@ RF24 radio(CE_PIN, CSN_PIN);
 
 const byte address[6] = "00001";
 
-//NRF24L01 buffer limit is 32 bytes (max struct size)
 struct payload {
   int data1;
   int data2;
@@ -25,14 +24,14 @@ payload payload;
 
 unsigned long lastSignalMillis = 0;
 
-Servo myservo;  // create servo object to control a servo 
+Servo myservo; 
 int valY;
 int valX;
-// Motor A connections
+// A 
 int enA = 6;
 int in1 = 7;
 int in2 = 4;
-// Motor B connections
+// B 
 int enB = 5;
 int in3 = 3;
 int in4 = 2;
@@ -96,18 +95,14 @@ void lostConnection()
 void setup() {
   radio.begin();
 
-  //Append ACK packet from the receiving radio back to the transmitting radio
-  radio.setAutoAck(false); //(true|false)
-  //Set the transmission datarate
-  radio.setDataRate(RF24_250KBPS); //(RF24_250KBPS|RF24_1MBPS|RF24_2MBPS)
-  //Greater level = more consumption = longer distance
-  radio.setPALevel(RF24_PA_MIN); //(RF24_PA_MIN|RF24_PA_LOW|RF24_PA_HIGH|RF24_PA_MAX)
-  //Default value is the maximum 32 bytes1
+  
+  radio.setAutoAck(false);
+  radio.setDataRate(RF24_250KBPS);
+  radio.setPALevel(RF24_PA_MIN);
   radio.setPayloadSize(sizeof(payload));
-  //Act as receiver
   radio.openReadingPipe(0, address);
   radio.startListening();
-  myservo.attach(0);  // initialize the servo
+  myservo.attach(0); 
   pinMode(enA, OUTPUT);
   pinMode(enB, OUTPUT);
   pinMode(in1, OUTPUT);
